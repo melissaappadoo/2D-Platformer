@@ -30,12 +30,15 @@ public class BetterCharacterController : MonoBehaviour
     protected Collider2D charCollision;
     protected Vector2 playerSize, boxSize;
 
+    Animator anim;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         charCollision = GetComponent<Collider2D>();
         playerSize = charCollision.bounds.extents;
         boxSize = new Vector2(playerSize.x, 0.05f);
+        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -83,7 +86,11 @@ public class BetterCharacterController : MonoBehaviour
         }
 
         //Get Player input 
-        horizInput = Input.GetAxis("Horizontal");     
+        horizInput = Input.GetAxis("Horizontal");
+        float movementValueX = Input.GetAxis("Horizontal");
+
+        anim.SetFloat("Speed", Mathf.Abs(movementValueX));
+        anim.SetBool("Grounded", grounded);
     }
 
     // Flip Character Sprite
