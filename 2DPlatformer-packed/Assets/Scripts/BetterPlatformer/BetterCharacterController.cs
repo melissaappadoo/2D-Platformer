@@ -26,9 +26,24 @@ public class BetterCharacterController : MonoBehaviour
     public Rigidbody2D rb;
 
     public LayerMask groundedLayers;
+    public float checkRadius;
 
     protected Collider2D charCollision;
     protected Vector2 playerSize, boxSize;
+
+    public float slideSpeed;
+    public float slideDuration;
+    bool isSliding;
+
+    bool isTouchingFront;
+    public Transform frontCheck;
+    bool wallSliding;
+    public float wallSlidingSpeed;
+
+    bool wallJumping;
+    public float xWallForce;
+    public float yWallForce;
+    public float wallJumpTime;
 
     Animator anim;
 
@@ -50,8 +65,14 @@ public class BetterCharacterController : MonoBehaviour
         //Move Character
         rb.velocity = new Vector2(horizInput * speed * Time.fixedDeltaTime, rb.velocity.y);
 
+        if (!isSliding)
+        {
+            //Move Character
+            rb.velocity = new Vector2(horizInput * speed * Time.fixedDeltaTime, rb.velocity.y);
+        }
+
         //Jump
-        if (jumped == true)
+        if (jumped == true && !isSliding)
         {
             rb.AddForce(new Vector2(0f, jumpForce));
             Debug.Log("Jumping!");
@@ -91,6 +112,37 @@ public class BetterCharacterController : MonoBehaviour
 
         anim.SetFloat("Speed", Mathf.Abs(movementValueX));
         anim.SetBool("Grounded", grounded);
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && isSliding == false)
+        {
+            CharacterSlide();
+        }
+
+        isTouchingFront = Physics2D.OverlapCircle(frontCheck.position, checkRadius, groundedLayers);
+
+        if (isTouchingFront && !grounded && movementValueX != 0)
+        {
+            wallSliding = true;
+        } else
+        {
+            wallSliding = false;
+        }
+
+        if (wallSliding)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, Mathf.Clamp(rb.velocity.y, -wallSlidingSpeed, float.MaxValue));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && wallSliding)
+        {
+            wallJumping = true;
+            Invoke("SetWallJumpingToFalse", wallJumpTime);
+        }
+
+        if (wallJumping)
+        {
+            rb.velocity = new Vector2(xWallForce * -movementValueX, yWallForce);
+        }
     }
 
     // Flip Character Sprite
@@ -98,5 +150,33 @@ public class BetterCharacterController : MonoBehaviour
     {
         facingRight = !facingRight;
         transform.Rotate(0, 180, 0);
+    }
+
+    void CharacterSlide()
+    {
+        isSliding = true;
+        anim.SetBool("IsCrouching", true);
+        if (facingRight)
+        {
+            rb.AddForce(Vector2.right * slideSpeed);
+        }
+        else
+        {
+            rb.AddForce(Vector2.left * slideSpeed);
+        }
+
+        StartCoroutine(CancelSlide());
+    }
+
+    IEnumerator CancelSlide()
+    {
+        yield return new WaitForSeconds(slideDuration);
+        anim.SetBool("IsCrouching", false);
+        isSliding = false;
+    }
+
+    void SetWallJumpingToFalse()
+    {
+        wallJumping = false;
     }
 }
