@@ -21,6 +21,7 @@ public class BobTheBlob : MonoBehaviour
     float direction;
 
     Animator anim;
+    public GameManager manager;
 
     private void Awake()
     {
@@ -123,6 +124,7 @@ public class BobTheBlob : MonoBehaviour
             else
             {
                 Destroy(other.gameObject);
+                FindObjectOfType<GameManager>().EndGame();
             }
         }
     }
