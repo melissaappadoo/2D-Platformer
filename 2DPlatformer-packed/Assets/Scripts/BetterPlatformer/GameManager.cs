@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -5,16 +6,22 @@ public class GameManager : MonoBehaviour
 {
     bool gameHasEnded = false;
 
-    public float restartDelay = 1f;
+    public float spawnDelay = 2f;
 
-    public void EndGame ()
+    public Transform playerPrefab;
+    public Transform spawnPoint;
+
+    public IEnumerator RespawnPlayer ()
     {
-        if (!gameHasEnded)
+        yield return new WaitForSeconds(spawnDelay);
+
+        Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+        /*if (!gameHasEnded)
         {
             gameHasEnded = true;
             Debug.Log("GAME OVER");
             Invoke("Restart", restartDelay);
-        }
+        }*/
     }
 
     void Restart()

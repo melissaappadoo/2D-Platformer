@@ -124,7 +124,8 @@ public class BobTheBlob : MonoBehaviour
             else
             {
                 Destroy(other.gameObject);
-                FindObjectOfType<GameManager>().EndGame();
+                manager = FindObjectOfType<GameManager>();
+                manager.StartCoroutine(manager.RespawnPlayer());
             }
         }
     }

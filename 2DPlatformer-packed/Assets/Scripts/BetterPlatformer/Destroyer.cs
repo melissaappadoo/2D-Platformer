@@ -11,7 +11,8 @@ public class Destroyer : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Destroy(collision.gameObject);
-            FindObjectOfType<GameManager>().EndGame();
+            GameManager = FindObjectOfType<GameManager>();
+            GameManager.StartCoroutine(GameManager.RespawnPlayer());
         }
     }
 }
