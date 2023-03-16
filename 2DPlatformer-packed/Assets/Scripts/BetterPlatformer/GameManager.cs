@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class GameManager : MonoBehaviour
 
     public Transform playerPrefab;
     public Transform spawnPoint;
+    public CinemachineVirtualCamera cam;
 
     public IEnumerator RespawnPlayer ()
     {
         yield return new WaitForSeconds(spawnDelay);
 
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);
+        cam.m_Follow = GameObject.FindGameObjectWithTag("Player").transform;
         /*if (!gameHasEnded)
         {
             gameHasEnded = true;

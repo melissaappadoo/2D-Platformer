@@ -1022,7 +1022,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 2.1213872, y: 1}
+    m_SensorSize: {x: 2.0206327, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4593,6 +4593,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 1363094491098517261, guid: 9dc2aba2e0a7dbd41be2032616045b1a,
     type: 3}
   spawnPoint: {fileID: 151589147}
+  cam: {fileID: 753215737}
 --- !u!4 &1531067548
 Transform:
   m_ObjectHideFlags: 0
