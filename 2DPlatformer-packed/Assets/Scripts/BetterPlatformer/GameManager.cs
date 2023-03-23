@@ -13,8 +13,16 @@ public class GameManager : MonoBehaviour
     public Transform spawnPoint;
     public CinemachineVirtualCamera cam;
 
+    public HealthDisplay healthDisplay;
+
     public IEnumerator RespawnPlayer ()
     {
+        healthDisplay.health--;
+        if (healthDisplay.health == 0)
+        {
+            SceneManager.LoadScene("GameOver");
+        }
+
         yield return new WaitForSeconds(spawnDelay);
 
         Instantiate(playerPrefab, spawnPoint.position, spawnPoint.rotation);

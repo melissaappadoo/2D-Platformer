@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class EndGame : MonoBehaviour
 {
+    private void Awake()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
     public void PlayGame()
     {
         SceneManager.LoadScene("Blank World");

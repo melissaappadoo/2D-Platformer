@@ -54,6 +54,7 @@ public class BetterCharacterController : MonoBehaviour
         playerSize = charCollision.bounds.extents;
         boxSize = new Vector2(playerSize.x, 0.05f);
         anim = GetComponent<Animator>();
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void FixedUpdate()
